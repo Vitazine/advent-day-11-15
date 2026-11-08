@@ -4,3 +4,7 @@ day12/runs/
 __pycache__/
 *.pyc
 .DS_Store
+day13/.venv/
+day13/.local/
+day13/*.db*
+day13/*.cred

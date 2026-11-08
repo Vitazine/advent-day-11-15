@@ -1,0 +1,43 @@
+[Unit]
+Description=Day 13 LLM Gateway
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=day13
+Group=day13
+WorkingDirectory=/srv/day13/current
+ExecStart=/srv/day13/current/.venv/bin/uvicorn day13.app:create_app --factory --host 127.0.0.1 --port 8130 --workers 1 --no-proxy-headers --no-access-log --log-level critical
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=DAY13_PRICE_DATE=2026-11-08
+LoadCredentialEncrypted=deepseek:/etc/day13/deepseek.cred
+LoadCredentialEncrypted=ip-hmac:/etc/day13/ip-hmac.cred
+StateDirectory=day13
+StateDirectoryMode=0700
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictNamespaces=true
+LockPersonality=true
+CapabilityBoundingSet=
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+MemoryMax=160M
+MemorySwapMax=64M
+TasksMax=32
+LimitCORE=0
+TimeoutStopSec=70
+Restart=on-failure
+RestartSec=5
+StandardOutput=null
+StandardError=null
+
+[Install]
+WantedBy=multi-user.target

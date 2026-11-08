@@ -1,0 +1,234 @@
+{
+  "synthetic_only": true,
+  "provider_calls": 0,
+  "cases": [
+    {
+      "case": "AWS",
+      "side": "input",
+      "blocked": true,
+      "categories": [
+        "API_KEY"
+      ],
+      "mask_allowed": true,
+      "audit_text": "[REDACTED_CONTENT]"
+    },
+    {
+      "case": "GitHub",
+      "side": "input",
+      "blocked": true,
+      "categories": [
+        "API_KEY"
+      ],
+      "mask_allowed": true,
+      "audit_text": "[REDACTED_CONTENT]"
+    },
+    {
+      "case": "OpenAI-like",
+      "side": "input",
+      "blocked": true,
+      "categories": [
+        "API_KEY"
+      ],
+      "mask_allowed": true,
+      "audit_text": "[REDACTED_CONTENT]"
+    },
+    {
+      "case": "Карта",
+      "side": "input",
+      "blocked": true,
+      "categories": [
+        "CARD"
+      ],
+      "mask_allowed": true,
+      "audit_text": "[REDACTED_CONTENT]"
+    },
+    {
+      "case": "Email",
+      "side": "input",
+      "blocked": true,
+      "categories": [
+        "EMAIL"
+      ],
+      "mask_allowed": true,
+      "audit_text": "[REDACTED_CONTENT]"
+    },
+    {
+      "case": "Телефон",
+      "side": "input",
+      "blocked": true,
+      "categories": [
+        "PHONE"
+      ],
+      "mask_allowed": true,
+      "audit_text": "[REDACTED_CONTENT]"
+    },
+    {
+      "case": "Base64",
+      "side": "input",
+      "blocked": true,
+      "categories": [
+        "API_KEY"
+      ],
+      "mask_allowed": true,
+      "audit_text": "[REDACTED_CONTENT]"
+    },
+    {
+      "case": "Двойной Base64",
+      "side": "input",
+      "blocked": true,
+      "categories": [
+        "API_KEY"
+      ],
+      "mask_allowed": true,
+      "audit_text": "[REDACTED_CONTENT]"
+    },
+    {
+      "case": "Разбитый ключ",
+      "side": "input",
+      "blocked": true,
+      "categories": [
+        "API_KEY"
+      ],
+      "mask_allowed": true,
+      "audit_text": "[REDACTED_CONTENT]"
+    },
+    {
+      "case": "Пробелы",
+      "side": "input",
+      "blocked": true,
+      "categories": [
+        "API_KEY"
+      ],
+      "mask_allowed": true,
+      "audit_text": "[REDACTED_CONTENT]"
+    },
+    {
+      "case": "Zero-width",
+      "side": "input",
+      "blocked": true,
+      "categories": [
+        "API_KEY"
+      ],
+      "mask_allowed": true,
+      "audit_text": "[REDACTED_CONTENT]"
+    },
+    {
+      "case": "Unicode",
+      "side": "input",
+      "blocked": true,
+      "categories": [
+        "API_KEY"
+      ],
+      "mask_allowed": true,
+      "audit_text": "[REDACTED_CONTENT]"
+    },
+    {
+      "case": "URL encoding",
+      "side": "input",
+      "blocked": true,
+      "categories": [
+        "API_KEY"
+      ],
+      "mask_allowed": true,
+      "audit_text": "[REDACTED_CONTENT]"
+    },
+    {
+      "case": "Чистый RU",
+      "side": "input",
+      "blocked": false,
+      "categories": [],
+      "mask_allowed": true,
+      "audit_text": "Объясни радугу"
+    },
+    {
+      "case": "Чистый EN",
+      "side": "input",
+      "blocked": false,
+      "categories": [],
+      "mask_allowed": true,
+      "audit_text": "Explain rainbows"
+    },
+    {
+      "case": "Версия",
+      "side": "input",
+      "blocked": false,
+      "categories": [],
+      "mask_allowed": true,
+      "audit_text": "Python 3.12.14"
+    },
+    {
+      "case": "Дата",
+      "side": "input",
+      "blocked": false,
+      "categories": [],
+      "mask_allowed": true,
+      "audit_text": "2026-11-08"
+    },
+    {
+      "case": "Output key",
+      "side": "output",
+      "blocked": true,
+      "categories": [
+        "API_KEY"
+      ],
+      "mask_allowed": false,
+      "audit_text": "[REDACTED_CONTENT]"
+    },
+    {
+      "case": "System prompt",
+      "side": "output",
+      "blocked": true,
+      "categories": [
+        "SYSTEM_PROMPT"
+      ],
+      "mask_allowed": false,
+      "audit_text": "[REDACTED_CONTENT]"
+    },
+    {
+      "case": "Опасная команда",
+      "side": "output",
+      "blocked": true,
+      "categories": [
+        "COMMAND"
+      ],
+      "mask_allowed": false,
+      "audit_text": "[REDACTED_CONTENT]"
+    },
+    {
+      "case": "Приватный URL",
+      "side": "output",
+      "blocked": true,
+      "categories": [
+        "URL"
+      ],
+      "mask_allowed": false,
+      "audit_text": "[REDACTED_CONTENT]"
+    },
+    {
+      "case": "Ошибка URL",
+      "side": "output",
+      "blocked": true,
+      "categories": [
+        "URL"
+      ],
+      "mask_allowed": false,
+      "audit_text": "[REDACTED_CONTENT]"
+    },
+    {
+      "case": "Обычный HTTPS",
+      "side": "output",
+      "blocked": false,
+      "categories": [],
+      "mask_allowed": true,
+      "audit_text": "https://docs.python.org/3/"
+    },
+    {
+      "case": "Известное ограничение: email словами",
+      "side": "input",
+      "blocked": false,
+      "categories": [],
+      "mask_allowed": true,
+      "audit_text": "demo собака example точка com"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-08",
+  "provider": "DeepSeek",
+  "calls": 1,
+  "http_status": 200,
+  "answer_present": true,
+  "usage": {
+    "prompt_tokens": 75,
+    "completion_tokens": 39,
+    "total_tokens": 114,
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 75
+  },
+  "cost_nano": 69300,
+  "cost_usd_peak_estimate": "0.0000693",
+  "secrets_read_or_exported": false
+}

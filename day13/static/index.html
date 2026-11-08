@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light"><title>Шлюз — Day 13</title>
+<link rel="stylesheet" href="/day13/app.css"><script defer src="/day13/app.js"></script>
+</head>
+<body>
+<a class="skip" href="#prompt">К запросу</a>
+<div class="shell">
+<header><a class="brand" href="/day13/" aria-label="Шлюз, главная"><span class="mark" aria-hidden="true">↗</span> Шлюз<span class="edition">DAY 13 / LLM GATEWAY</span></a><span class="private">Доступ по паролю</span></header>
+<main>
+<section class="intro"><div><p class="eyebrow">ЛАБОРАТОРИЯ БЕЗОПАСНОСТИ</p><h1>Между запросом<br>и моделью — проверка.</h1><p class="lead">Исследуйте, что пропускает защита, а что остаётся за её пределами. Только синтетические данные.</p></div><div class="route" aria-label="Путь запроса"><span>Ваш запрос</span><span aria-hidden="true">↓</span><strong>Input Guard</strong><span aria-hidden="true">↓</span><span>DeepSeek</span><span aria-hidden="true">↓</span><strong>Output Guard</strong></div></section>
+<section class="budget" aria-label="Ограничения использования">
+<div><p class="label">ЗАПРОСЫ / МИНУТУ</p><p class="metric" id="rate">— <small>/ 10</small></p><p class="hint" id="rate-info">Загрузка лимитов…</p></div>
+<div><p class="label">ОСТАТОК НА 30 МИНУТ</p><p class="metric" id="remaining">— <small>/ $0.10</small></p><progress id="budget-meter" max="100" value="100" aria-label="Доступная доля бюджета"></progress><p class="hint" id="cost-info">Для текущего IP</p></div>
+<div><p class="label">ОБЩИЙ БЮДЖЕТ / 24 ЧАСА</p><p class="metric" id="global">— <small>/ $1.00</small></p><p class="hint" id="release">Скользящее окно</p></div>
+</section>
+<div id="service" class="notice" role="status">Проверяем доступность сервиса…</div>
+<div class="workspace">
+<section class="panel compose" aria-labelledby="compose-title"><div class="panel-heading"><h2 id="compose-title">01 <span>Запрос</span></h2><span class="badge">INPUT GUARD</span></div>
+<form id="request-form">
+<label for="prompt">Сообщение для модели</label><textarea id="prompt" name="prompt" rows="8" maxlength="8192" placeholder="Например: объясни, почему не стоит хранить API-ключ в браузере." required></textarea>
+<div class="input-footer"><span id="bytes">0 / 8192 байт</span><button class="text-button" type="button" id="example">Вставить тестовый email</button></div>
+<fieldset><legend>При обнаружении чувствительных данных</legend><div class="modes"><label><input type="radio" name="mode" value="block" checked><span><strong>Блокировать</strong><small>Остановить до модели</small></span></label><label><input type="radio" name="mode" value="mask"><span><strong>Маскировать</strong><small>Заменить на [REDACTED]</small></span></label></div></fieldset>
+<button class="submit" id="send" type="submit" disabled><span>Проверить и отправить</span><span aria-hidden="true">↗</span></button>
+<p class="fine">Секреты и персональные данные вводить не нужно. Режим маскирования проверяйте на вымышленных примерах.</p>
+</form></section>
+<section class="panel response" aria-labelledby="response-title"><div class="panel-heading"><h2 id="response-title">02 <span>Результат</span></h2><span class="badge">OUTPUT GUARD</span></div>
+<div id="result" aria-live="polite" aria-atomic="true"><div class="empty"><span class="empty-icon" aria-hidden="true">◎</span><h3>Здесь появится безопасный ответ</h3><p>Сначала проверим запрос.<br>Затем — ответ модели.</p></div></div>
+<div class="result-meta" id="result-meta"></div>
+</section></div>
+<footer><p><strong>Защита — это проверяемые правила.</strong> Фильтры могут пропускать необычные формы секретов и давать ложные срабатывания.</p><p>Расходы — верхняя оценка по пиковому тарифу, не выписка DeepSeek. IP может быть общим для нескольких пользователей. Новый запрос отправляется только по нажатию кнопки.</p></footer>
+</main></div>
+</body></html>
