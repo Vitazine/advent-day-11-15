@@ -1,0 +1,2 @@
+# Initial bootstrap and snapshot/doctor modules use Python standard library only.
+# Runtime dependencies will be pinned when their task is implemented.

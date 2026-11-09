@@ -1,0 +1,710 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Day14 Gateway",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/v1/chat/completions": {
+      "post": {
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Проверенный результат; Chat поддерживает JSON или буферизованный SSE."
+          },
+          "default": {
+            "description": "Безопасная ошибка error.code; X-Request-ID."
+          }
+        }
+      }
+    },
+    "/v1/security/reviews": {
+      "post": {
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Проверенный результат; Chat поддерживает JSON или буферизованный SSE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Безопасная ошибка error.code; X-Request-ID."
+          }
+        }
+      }
+    },
+    "/v1/models": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Модели либо собственные лимиты клиента."
+          }
+        }
+      }
+    },
+    "/v1/limits": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Модели либо собственные лимиты клиента."
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "components": {
+    "schemas": {
+      "FunctionCall": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_-]+$",
+            "title": "Name",
+            "type": "string"
+          },
+          "arguments": {
+            "title": "Arguments",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "arguments"
+        ],
+        "title": "FunctionCall",
+        "type": "object"
+      },
+      "FunctionChoice": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "FunctionChoice",
+        "type": "object"
+      },
+      "FunctionDef": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_-]+$",
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "parameters": {
+            "additionalProperties": true,
+            "title": "Parameters",
+            "type": "object"
+          },
+          "strict": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Strict"
+          }
+        },
+        "required": [
+          "name",
+          "parameters"
+        ],
+        "title": "FunctionDef",
+        "type": "object"
+      },
+      "Message": {
+        "additionalProperties": false,
+        "properties": {
+          "role": {
+            "enum": [
+              "system",
+              "user",
+              "assistant",
+              "tool"
+            ],
+            "title": "Role",
+            "type": "string"
+          },
+          "content": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "$ref": "#/components/schemas/TextPart"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Content"
+          },
+          "tool_calls": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ToolCall"
+                },
+                "maxItems": 64,
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Tool Calls"
+          },
+          "tool_call_id": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Tool Call Id"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Name"
+          }
+        },
+        "required": [
+          "role"
+        ],
+        "title": "Message",
+        "type": "object"
+      },
+      "StreamOptions": {
+        "additionalProperties": false,
+        "properties": {
+          "include_usage": {
+            "default": false,
+            "title": "Include Usage",
+            "type": "boolean"
+          }
+        },
+        "title": "StreamOptions",
+        "type": "object"
+      },
+      "TextPart": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "text",
+            "title": "Type",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "text"
+        ],
+        "title": "TextPart",
+        "type": "object"
+      },
+      "Tool": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "function",
+            "title": "Type",
+            "type": "string"
+          },
+          "function": {
+            "$ref": "#/components/schemas/FunctionDef"
+          }
+        },
+        "required": [
+          "type",
+          "function"
+        ],
+        "title": "Tool",
+        "type": "object"
+      },
+      "ToolCall": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Id",
+            "type": "string"
+          },
+          "type": {
+            "const": "function",
+            "title": "Type",
+            "type": "string"
+          },
+          "function": {
+            "$ref": "#/components/schemas/FunctionCall"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "function"
+        ],
+        "title": "ToolCall",
+        "type": "object"
+      },
+      "ToolChoice": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "function",
+            "title": "Type",
+            "type": "string"
+          },
+          "function": {
+            "$ref": "#/components/schemas/FunctionChoice"
+          }
+        },
+        "required": [
+          "type",
+          "function"
+        ],
+        "title": "ToolChoice",
+        "type": "object"
+      },
+      "ChatRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "model": {
+            "const": "day14-coder",
+            "title": "Model",
+            "type": "string"
+          },
+          "messages": {
+            "items": {
+              "$ref": "#/components/schemas/Message"
+            },
+            "maxItems": 200,
+            "minItems": 1,
+            "title": "Messages",
+            "type": "array"
+          },
+          "tools": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Tool"
+                },
+                "maxItems": 64,
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Tools"
+          },
+          "tool_choice": {
+            "anyOf": [
+              {
+                "enum": [
+                  "auto",
+                  "none",
+                  "required"
+                ],
+                "type": "string"
+              },
+              {
+                "$ref": "#/components/schemas/ToolChoice"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Tool Choice"
+          },
+          "stream": {
+            "default": false,
+            "title": "Stream",
+            "type": "boolean"
+          },
+          "stream_options": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/StreamOptions"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "temperature": {
+            "anyOf": [
+              {
+                "maximum": 2,
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Temperature"
+          },
+          "top_p": {
+            "anyOf": [
+              {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Top P"
+          },
+          "max_tokens": {
+            "default": 4096,
+            "maximum": 8192,
+            "minimum": 1,
+            "title": "Max Tokens",
+            "type": "integer"
+          },
+          "max_completion_tokens": {
+            "anyOf": [
+              {
+                "maximum": 8192,
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Max Completion Tokens"
+          },
+          "n": {
+            "const": 1,
+            "default": 1,
+            "title": "N",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "model",
+          "messages"
+        ],
+        "title": "ChatRequest",
+        "type": "object"
+      },
+      "ReviewFile": {
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "maxLength": 240,
+            "minLength": 1,
+            "title": "Path",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string"
+          }
+        },
+        "required": [
+          "path",
+          "content"
+        ],
+        "title": "ReviewFile",
+        "type": "object"
+      },
+      "ReviewRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "stack_profile": {
+            "const": "python-fastapi",
+            "title": "Stack Profile",
+            "type": "string"
+          },
+          "files": {
+            "items": {
+              "$ref": "#/components/schemas/ReviewFile"
+            },
+            "maxItems": 20,
+            "minItems": 1,
+            "title": "Files",
+            "type": "array"
+          },
+          "task": {
+            "default": "",
+            "maxLength": 8192,
+            "title": "Task",
+            "type": "string"
+          }
+        },
+        "required": [
+          "stack_profile",
+          "files"
+        ],
+        "title": "ReviewRequest",
+        "type": "object"
+      },
+      "Finding": {
+        "additionalProperties": false,
+        "properties": {
+          "severity": {
+            "enum": [
+              "Critical",
+              "High",
+              "Medium",
+              "Low"
+            ],
+            "title": "Severity",
+            "type": "string"
+          },
+          "category": {
+            "enum": [
+              "SECRET_EXPOSURE",
+              "UNSAFE_STORAGE",
+              "PII_LOGGING",
+              "INSECURE_TRANSPORT",
+              "INPUT_VALIDATION",
+              "INJECTION",
+              "DESERIALIZATION",
+              "PATH_TRAVERSAL",
+              "SSRF",
+              "AUTHORIZATION",
+              "OTHER"
+            ],
+            "title": "Category",
+            "type": "string"
+          },
+          "path": {
+            "maxLength": 240,
+            "minLength": 1,
+            "title": "Path",
+            "type": "string"
+          },
+          "line": {
+            "anyOf": [
+              {
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Line"
+          },
+          "message": {
+            "maxLength": 600,
+            "minLength": 1,
+            "title": "Message",
+            "type": "string"
+          },
+          "remediation": {
+            "maxLength": 600,
+            "minLength": 1,
+            "title": "Remediation",
+            "type": "string"
+          }
+        },
+        "required": [
+          "severity",
+          "category",
+          "path",
+          "line",
+          "message",
+          "remediation"
+        ],
+        "title": "Finding",
+        "type": "object"
+      },
+      "Usage": {
+        "additionalProperties": false,
+        "properties": {
+          "prompt_tokens": {
+            "maximum": 2000000,
+            "minimum": 0,
+            "title": "Prompt Tokens",
+            "type": "integer"
+          },
+          "completion_tokens": {
+            "maximum": 2000000,
+            "minimum": 0,
+            "title": "Completion Tokens",
+            "type": "integer"
+          },
+          "total_tokens": {
+            "maximum": 4000000,
+            "minimum": 0,
+            "title": "Total Tokens",
+            "type": "integer"
+          },
+          "prompt_cache_hit_tokens": {
+            "maximum": 2000000,
+            "minimum": 0,
+            "title": "Prompt Cache Hit Tokens",
+            "type": "integer"
+          },
+          "prompt_cache_miss_tokens": {
+            "maximum": 2000000,
+            "minimum": 0,
+            "title": "Prompt Cache Miss Tokens",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "prompt_tokens",
+          "completion_tokens",
+          "total_tokens",
+          "prompt_cache_hit_tokens",
+          "prompt_cache_miss_tokens"
+        ],
+        "title": "Usage",
+        "type": "object"
+      },
+      "ReviewResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "review_id": {
+            "title": "Review Id",
+            "type": "string"
+          },
+          "request_id": {
+            "title": "Request Id",
+            "type": "string"
+          },
+          "artifact_hash": {
+            "title": "Artifact Hash",
+            "type": "string"
+          },
+          "policy_version": {
+            "const": "python-fastapi-v1",
+            "default": "python-fastapi-v1",
+            "title": "Policy Version",
+            "type": "string"
+          },
+          "stack_profile": {
+            "const": "python-fastapi",
+            "default": "python-fastapi",
+            "title": "Stack Profile",
+            "type": "string"
+          },
+          "decision": {
+            "enum": [
+              "pass",
+              "warn",
+              "block"
+            ],
+            "title": "Decision",
+            "type": "string"
+          },
+          "findings": {
+            "items": {
+              "$ref": "#/components/schemas/Finding"
+            },
+            "title": "Findings",
+            "type": "array"
+          },
+          "usage": {
+            "$ref": "#/components/schemas/Usage"
+          }
+        },
+        "required": [
+          "review_id",
+          "request_id",
+          "artifact_hash",
+          "decision",
+          "findings",
+          "usage"
+        ],
+        "title": "ReviewResponse",
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}

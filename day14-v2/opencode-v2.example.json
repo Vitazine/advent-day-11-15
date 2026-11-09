@@ -1,0 +1,15 @@
+{
+  "model": "day14/day14-coder",
+  "update": "disable",
+  "permissions": [{"action": "*", "resource": "*", "effect": "deny"}],
+  "providers": {
+    "day14": {
+      "name": "Day14 Gateway",
+      "env": ["DAY14_PROXY_TOKEN"],
+      "package": "@opencode/ai/providers/openai-compatible",
+      "settings": {"baseURL": "https://just-black-coffe.shop/day14-v2/v1"},
+      "body": {"max_tokens": 4096},
+      "models": {"day14-coder": {"name": "Day14", "limit": {"context": 32768, "output": 4096}}}
+    }
+  }
+}

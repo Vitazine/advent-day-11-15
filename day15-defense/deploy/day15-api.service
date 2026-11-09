@@ -1,0 +1,34 @@
+[Unit]
+Description=Day15 partner API
+After=network-online.target day15-executor.service
+Requires=day15-executor.service
+[Service]
+User=day15api
+Group=day15api
+WorkingDirectory=/srv/day15-defense/current
+ExecStart=/srv/day15-defense/current/runtime/bin/python -m uvicorn api.app:production --factory --host 127.0.0.1 --port 8151 --workers 1 --no-access-log --log-level critical
+Restart=on-failure
+RestartSec=5
+UMask=0077
+StateDirectory=day15-api
+StateDirectoryMode=0700
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/day15-api
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+CapabilityBoundingSet=
+MemoryMax=128M
+MemorySwapMax=32M
+TasksMax=32
+CPUQuota=50%
+TimeoutStopSec=10
+KillMode=control-group
+StandardOutput=null
+StandardError=null
+[Install]
+WantedBy=multi-user.target

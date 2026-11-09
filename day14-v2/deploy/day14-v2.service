@@ -1,0 +1,47 @@
+[Unit]
+Description=Day14 v2 OpenCode LLM Gateway
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=day14v2
+Group=day14v2
+WorkingDirectory=/srv/day14-v2/current
+ExecStart=/srv/day14-v2/current/.venv/bin/python -m gateway
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=DAY14_DATA_DIR=/var/lib/day14-v2
+Environment=DAY14_PORT=8141
+Environment=DAY14_PRICE_DATE=2026-11-08
+Environment=DAY14_UPSTREAM_KEY_FILE=%d/deepseek
+Environment=DAY14_TOKENS_FILE=%d/tokens
+LoadCredentialEncrypted=deepseek:/etc/day14-v2/deepseek.cred
+LoadCredential=tokens:/etc/day14-v2/tokens.json
+StateDirectory=day14-v2
+StateDirectoryMode=0700
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictNamespaces=true
+LockPersonality=true
+CapabilityBoundingSet=
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+MemoryMax=160M
+MemorySwapMax=64M
+TasksMax=32
+LimitCORE=0
+TimeoutStopSec=130
+Restart=on-failure
+RestartSec=5
+StandardOutput=null
+StandardError=null
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,10 @@
+{
+  "version": "2.2.6",
+  "binary": "/Applications/OpenCode.app/Contents/Resources/opencode-cli",
+  "sha256": "1e625ef38dac73baecdbd3d25e31eea3f6b9bae35aaac45fe720ac8ac1717422",
+  "configuration_version": 2,
+  "execution_mode": "standalone",
+  "integration_verified": true,
+  "transport": "budgeted-loopback-relay",
+  "tools": []
+}
